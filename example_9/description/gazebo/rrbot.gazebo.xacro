@@ -5,14 +5,24 @@ https://github.com/ros-simulation/gazebo_ros_demos/blob/kinetic-devel/rrbot_desc
 -->
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
-  <xacro:macro name="rrbot_gazebo" params="prefix">
+  <xacro:macro name="rrbot_gazebo" params="prefix gazebo_fortress:=^|true">
 
-    <!-- ros_control plugin -->
-    <gazebo>
-      <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
-        <parameters>$(find ros2_control_demo_example_9)/config/rrbot_controllers.yaml</parameters>
-      </plugin>
-    </gazebo>
+    <xacro:if value="${gazebo_fortress}">
+      <!-- Gazebo Fortress ros_control plugin -->
+      <gazebo>
+        <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
+          <parameters>$(find ros2_control_demo_example_9)/config/rrbot_controllers.yaml</parameters>
+        </plugin>
+      </gazebo>
+    </xacro:if>
+    <xacro:unless value="${gazebo_fortress}">
+      <!-- Gazebo Classic ros_control plugin -->
+      <gazebo>
+        <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
+          <parameters>$(find ros2_control_demo_example_9)/config/rrbot_controllers.yaml</parameters>
+        </plugin>
+      </gazebo>
+    </xacro:unless>
 
     <!-- Link1 -->
     <gazebo reference="${prefix}base_link">

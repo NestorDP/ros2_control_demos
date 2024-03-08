@@ -43,6 +43,11 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE "ROS2_CONTROL_DEMO_EXAMPLE_9_
 # Export hardware plugins
 pluginlib_export_plugin_description_file(hardware_interface ros2_control_demo_example_9.xml)
 
+configure_file(
+  "description/gazebo/hooks/hook.dsv.in"
+  "${CMAKE_CURRENT_BINARY_DIR}/hooks/hook.dsv" @ONLY
+)
+
 # INSTALL
 install(
   DIRECTORY hardware/include/
@@ -52,9 +57,14 @@ install(
   DIRECTORY description/launch description/ros2_control description/urdf description/gazebo
   DESTINATION share/ros2_control_demo_example_9
 )
-install(
-  DIRECTORY bringup/launch bringup/config
-  DESTINATION share/ros2_control_demo_example_9
+install( DIRECTORY
+  bringup/config 
+  bringup/launch
+  description/gazebo/worlds
+  description/gazebo/models
+  description/urdf
+  ${CMAKE_CURRENT_BINARY_DIR}/hooks
+  DESTINATION share/${PROJECT_NAME}
 )
 install(TARGETS ros2_control_demo_example_9
   EXPORT export_ros2_control_demo_example_9
