@@ -69,7 +69,7 @@ def generate_launch_description():
         executable='parameter_bridge',
         arguments=[
             '/clock@rosgraph_msgs/msg/Clock[ignition.msgs.Clock',
-            # 'force_torque@geometry_msgs/msg/Wrench[ignition.msgs.Wrench'
+            'force_torque@geometry_msgs/msg/Wrench[ignition.msgs.Wrench'
         ],
         output='screen'
     )
